@@ -1,0 +1,8 @@
+.cproject
+.project
+.settings
+O.*
+bin
+lib
+dbd
+db

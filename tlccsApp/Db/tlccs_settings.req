@@ -1,0 +1,12 @@
+$(P)$(R)TlAmplitudeData_RBV
+$(P)$(R)TlAmplitudeDataMode
+$(P)$(R)TlAmplitudeDataMode_RBV
+$(P)$(R)TlAmplitudeDataTarget
+$(P)$(R)TlAmplitudeDataTarget_RBV
+$(P)$(R)TlWavelengthData_RBV
+$(P)$(R)TlWavelengthDataTarget
+$(P)$(R)TlWavelengthDataTarget_RBV
+$(P)$(R)TlAcquisitionType
+$(P)$(R)TlAcquisitionType_RBV
+file "ADBase_settings.req", P=$(P), R=$(R)
+

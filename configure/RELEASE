@@ -1,0 +1,19 @@
+#RELEASE Location of external products
+# Run "gnumake clean uninstall install" in the application
+# top directory each time this file is changed.
+
+SUPPORT=${MY_EPICS_SUPPORT}
+AREADETECTOR=${MY_EPICS_AREADETECTOR}
+
+-include $(AREADETECTOR)/configure/RELEASE_PATHS.local
+-include $(AREADETECTOR)/configure/RELEASE_PATHS.local.$(EPICS_HOST_ARCH)
+-include $(AREADETECTOR)/configure/RELEASE_LIBS.local
+-include $(AREADETECTOR)/configure/RELEASE_PRODS.local
+-include $(TOP)/RELEASE.local
+-include $(TOP)/configure/RELEASE.local
+
+ADTLCCS = $(TOP)
+TLCCSDRV=$(SUPPORT)/tlccsdrv
+
+BUILD_IOCS = YES
+

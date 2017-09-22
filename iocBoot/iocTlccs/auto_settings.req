@@ -1,0 +1,4 @@
+file "tlccs_settings.req",          P=$(P),  R=cam1:
+file "NDFileAscii_settings.req",    P=$(P),  R=Ascii1:
+file "NDStdArrays_settings.req",    P=$(P),  R=Trace1:
+file "commonPlugin_settings.req",   P=$(P)
