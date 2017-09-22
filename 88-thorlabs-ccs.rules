@@ -1,0 +1,19 @@
+# Thorlabs CCSxxx USB Spectrometer Devices
+# lsusb: 1313:8080 ThorLabs
+# lsusb: 1313:8081 ThorLabs
+# lsusb: 1313:8082 ThorLabs
+# lsusb: 1313:8083 ThorLabs
+# lsusb: 1313:8084 ThorLabs
+# lsusb: 1313:8085 ThorLabs
+# lsusb: 1313:8086 ThorLabs
+# lsusb: 1313:8087 ThorLabs
+# lsusb: 1313:8088 ThorLabs
+# lsusb: 1313:8089 ThorLabs
+
+ACTION!="add|change", GOTO="usb_device_end"
+SUBSYSTEM!="usb", GOTO="usb_device_end"
+ENV{DEVTYPE}!="usb_device", GOTO="usb_device_end"
+
+ATTRS{idVendor}=="1313", MODE="0666"
+
+LABEL="usb_device_end"
