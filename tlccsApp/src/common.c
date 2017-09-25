@@ -27,6 +27,7 @@
 
 static usb_store_t *g_store = NULL;
 
+#if _DBG > 1
 static void __hexdump(FILE * stream, void const * data, unsigned int len) {
 	unsigned int i;
 	unsigned int r, c;
@@ -70,11 +71,9 @@ static void __hexdump(FILE * stream, void const * data, unsigned int len) {
 
 	fflush(stream);
 }
-#define	HEXDUMP(stream, data, len) do { \
-	if (TLCCSDEBUG > 1) \
-	__hexdump(stream, data, len); \
-} while(0)
-
+#else
+static void __hexdump(FILE * stream, void const * data, unsigned int len) {}
+#endif
 
 static int __load_firmware(usb_dev_t *dev) {
 	int r;
@@ -139,7 +138,7 @@ static int __load_firmware(usb_dev_t *dev) {
 			ERR("premature end of file\n");
 			return -1;
 		}
-		HEXDUMP(stdout, hdr, SIZEOF_FWHEADER);
+		__hexdump(stdout, hdr, SIZEOF_FWHEADER);
 		DBG2("TAG:         %.*s\n", 4, hdr->tag);
 		DBG2("wValue:      0x%X\n", hdr->wValue);
 		DBG2("wLength:     0x%X\n", hdr->wLength);
@@ -152,7 +151,7 @@ static int __load_firmware(usb_dev_t *dev) {
 			return -1;
 		}
 		DBG2("data length: 0x%X (%d)\n", r, r);
-		HEXDUMP(stdout, buf, hdr->wLength);
+		__hexdump(stdout, buf, hdr->wLength);
 
 		r = libusb_control_transfer(
 				dev->handle,				/* handle */
@@ -880,7 +879,7 @@ int usbControl(usb_dev_t *dev,
     	ERR("libusb_control_transfer failed: %s\n", libusb_strerror(r));
 	}
 
-	HEXDUMP(stdout, data, wLength);
+	__hexdump(stdout, data, wLength);
 
 	LEAVE2
 
@@ -916,7 +915,7 @@ int usbBulk(usb_dev_t *dev,
     	ERR("libusb_bulk_transfer failed: %s\n", libusb_strerror(r));
 	}
 
-	HEXDUMP(stdout, data, wLength);
+	__hexdump(stdout, data, wLength);
 
 	LEAVE
 

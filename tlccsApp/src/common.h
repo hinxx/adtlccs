@@ -17,13 +17,6 @@
 
 #include "list.h"
 
-
-/* See Makefile */
-#ifndef _TLCCSDEBUG
-#define _TLCCSDEBUG		2
-#endif
-#define TLCCSDEBUG		_TLCCSDEBUG
-
 #define INF(format, ...) \
 	do { if (1) \
 		fprintf(stderr, \
@@ -36,7 +29,7 @@
 	} while (0)
 
 #define DBG(format, ...) \
-	do { if (TLCCSDEBUG) \
+	do { if (_DBG) \
 		fprintf(stderr, \
 				"DBG %s:%d:%s(): " \
 				format, \
@@ -47,7 +40,7 @@
 	} while (0)
 
 #define DBG2(format, ...) \
-	do { if (TLCCSDEBUG > 1) \
+	do { if (_DBG > 1) \
 		fprintf(stderr, \
 				"DBG %s:%d:%s(): " \
 				format, \
@@ -67,7 +60,7 @@
 			## __VA_ARGS__)
 
 #define ASSERT(x) \
-	do { if (TLCCSDEBUG) \
+	do { if (_DBG) \
 		assert(x); \
 	} while(0)
 

@@ -14,21 +14,23 @@ PROD_NAME = tlccs
 CXXFLAGS += -fno-operator-names
 
 # install tlccs.dbd into <top>/dbd
-DBD += tlccsSupport.dbd
+DBD += $(PROD_NAME)Support.dbd
+
+#$(warning T_A = $(T_A))
+ifeq (debug,$(findstring debug, $(T_A)))
+#	USR_CPPFLAGS += -D_DBG=2
+	USR_CPPFLAGS += -D_DBG=1
+else
+	USR_CPPFLAGS += -D_DBG=0
+endif
+#$(warning USR_CPPFLAGS = $(USR_CPPFLAGS))
 
 # specify all source files to be compiled and added to the library
-#tlccs_SRCS += xxx
-$(PROD_NAME)_SRCS += tlccsApp_registerRecordDeviceDriver.cpp tlccsAppMain.cpp
 $(PROD_NAME)_SRCS += tlccs.cpp
 $(PROD_NAME)_SRCS += tlccsdrv.c
 $(PROD_NAME)_SRCS += fakevisa.c
 $(PROD_NAME)_SRCS += common.c
 
-# CCS library and includes are here
-#USR_INCLUDES += -I$(TLCCSDRV)/src
-#USR_LDFLAGS += -L$(TLCCSDRV)/src
-
-#$(PROD_NAME)_LIBS += $(EPICS_BASE_IOC_LIBS)
 include $(ADCORE)/ADApp/commonLibraryMakefile
 
 #===========================
