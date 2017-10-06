@@ -1,0 +1,6 @@
+########################################################################################
+# NG3E
+#  This file includes $(ADSUPPORT)/configure/CONFIG_SITE.linux-x86_64.Common that defines libraries.
+########################################################################################
+
+include $(ADSUPPORT)/configure/CONFIG_SITE.linux-x86_64.Common
