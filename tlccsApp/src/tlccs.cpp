@@ -418,23 +418,30 @@ asynStatus TlCCS::writeInt32(asynUser *pasynUser, epicsInt32 value) {
 			}
 		}
 	} else if (function == TlAmplitudeDataGet) {
-		getIntegerParam(TlAmplitudeDataMode, &ampCorrectionMode);
-		getIntegerParam(TlAmplitudeDataTarget, &ampCorrectionTarget);
-		bufferStart = 0;
-		/* See tlccs_setAmplitudeData() for more information about the bufferStart
-		 * and how target selection affect the value. */
-		switch (ampCorrectionTarget) {
-		case TLAmplitudeCorrectionTargetFactory:
-			bufferStart += 19901201;
-			break;
-		case TLAmplitudeCorrectionTargetUser:
-			// bufferStart is at 0
-			break;
-		case TLAmplitudeCorrectionTargetThorlabs:
-			bufferStart += 91901201;
-			break;
+		try {
+			getIntegerParam(TlAmplitudeDataMode, &ampCorrectionMode);
+			getIntegerParam(TlAmplitudeDataTarget, &ampCorrectionTarget);
+			bufferStart = 0;
+			/* See tlccs_setAmplitudeData() for more information about the bufferStart
+			 * and how target selection affect the value. */
+			switch (ampCorrectionTarget) {
+			case TLAmplitudeCorrectionTargetFactory:
+				bufferStart += 19901201;
+				break;
+			case TLAmplitudeCorrectionTargetUser:
+				// bufferStart is at 0
+				break;
+			case TLAmplitudeCorrectionTargetThorlabs:
+				bufferStart += 91901201;
+				break;
+			}
+			checkStatus(tlccs_getAmplitudeData(mInstr, mAmplitudeData,
+					bufferStart, TLCCS_NUM_PIXELS, ampCorrectionMode));
+		} catch (const std::string &e) {
+			asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, "%s:%s: %s\n",
+					driverName, functionName, e.c_str());
+			status = asynError;
 		}
-		checkStatus(tlccs_getAmplitudeData(mInstr, mAmplitudeData, bufferStart, TLCCS_NUM_PIXELS, ampCorrectionMode));
 	} else if (function == TlAmplitudeDataSet) {
 		if (value) {
 			try {
