@@ -920,8 +920,6 @@ void TlCCS::dataTask(void) {
 
 				// If array callbacks are enabled then read data into NDArray, do callbacks
 				if (arrayCallbacks) {
-					epicsTimeGetCurrent(&startTime);
-
 					// Allocate an NDArray to hold:
 					// y=0 processed or raw data (only data pixels),
 					// y=2 wavelength data
@@ -948,6 +946,15 @@ void TlCCS::dataTask(void) {
 					memcpy((epicsFloat64 *)pArray->pData + 2 * TLCCS_NUM_PIXELS,
 							mAmplitudeData, TLCCS_NUM_PIXELS * sizeof(epicsFloat64));
 
+					/* Put the frame number and time stamp into the buffer */
+					pArray->uniqueId = imageCounter;
+
+					epicsTimeGetCurrent(&startTime);
+					pArray->timeStamp = startTime.secPastEpoch + startTime.nsec / 1.e9;
+
+					/* Update the areaDetector timeStamp */
+					updateTimeStamp(&pArray->epicsTS);
+
 					/* Get any attributes that have been defined for this driver */
 					this->getAttributes(pArray->pAttributeList);
 					/* Add attributes used in NDFileAscii plugin */
@@ -960,9 +967,6 @@ void TlCCS::dataTask(void) {
 					i = TLCCS_NUM_PIXELS;
 					pArray->pAttributeList->add("ColSkip", "", NDAttrInt32, &i);
 
-					/* Put the frame number and time stamp into the buffer */
-					pArray->uniqueId = imageCounter;
-					pArray->timeStamp = startTime.secPastEpoch + startTime.nsec / 1.e9;
 					/* Call the NDArray callback */
 					/* Must release the lock here, or we can get into a deadlock, because we can
 					 * block on the plugin lock, and the plugin can be calling us */
